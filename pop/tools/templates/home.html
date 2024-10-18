@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}Инструменты{% endblock %}
+
+{% block content %}
+<h1>Добро пожаловать в приложение "Инструменты"</h1>
+<div class="container">
+    <a class="tile" href="{% url 'text_analysis' %}">Анализ текста</a>
+    <a class="tile" href="{% url 'create_specification' %}">Создать техзадание</a>
+    <a class="tile" href="{% url 'create_neural_network' %}">Создать нейросеть</a>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .container {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 50px;
+    }
+    .tile {
+        width: 200px;
+        height: 100px;
+        background-color: #f2f2f2;
+        text-align: center;
+        line-height: 100px;
+        font-size: 18px;
+        border: 1px solid #ccc;
+        text-decoration: none;
+        color: #000;
+    }
+    .tile:hover {
+        background-color: #ddd;
+    }
+</style>
+{% endblock %}
+

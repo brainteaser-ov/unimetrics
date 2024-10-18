@@ -1,10 +1,17 @@
-# from django.contrib import admin
-# from .models import ToolModel  # Импортируйте ваши модели
-#
-#
-# class ToolModelAdmin(admin.ModelAdmin):
-#     list_display = ('field1', 'field2', 'field3')  # поля, отображаемые в списке
-#     search_fields = ('field1', 'field2')           # поля для поиска
-#     list_filter = ('field3',)
-# # Регистрируем модель
-# admin.site.register(ToolModel)
+from django.contrib import admin
+from .models import TextAnalysis, Specification, NeuralNetwork
+
+
+@admin.register(TextAnalysis)
+class TextAnalysisAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(Specification)
+class SpecificationAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(NeuralNetwork)
+class NeuralNetworkAdmin(admin.ModelAdmin):
+    pass

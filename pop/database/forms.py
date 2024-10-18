@@ -15,11 +15,7 @@ class DatabaseForm(forms.ModelForm):
 class DataObjectForm(forms.ModelForm):
     class Meta:
         model = DataObject
-        fields = ['name', 'language', 'text', 'file', 'gender', 'age', 'region']
-
-    def clean_file(self):
-        file = self.cleaned_data.get('file')
-        db_type = self.instance.database.db_type if self.instance.database else None
+        fields = ['name', 'language', 'text', 'file', 'gender', 'age', 'region', 'database']
         labels = {
             'name': 'Название/Описание объекта',
             'language': 'Язык',
@@ -28,10 +24,15 @@ class DataObjectForm(forms.ModelForm):
             'gender': 'Пол',
             'age': 'Возраст',
             'region': 'Регион',
+            'database': 'База данных'
         }
 
+    def clean_file(self):
+        file = self.cleaned_data.get('file')
+        database = self.cleaned_data.get('database')
+        db_type = database.db_type if database else None
+
         if file and db_type:
-            valid_mime_types = []
             valid_extensions = []
             if db_type == 'phonetic':
                 valid_extensions = ['.wav']
@@ -40,7 +41,8 @@ class DataObjectForm(forms.ModelForm):
             elif db_type == 'image':
                 valid_extensions = ['.jpg', '.png']
 
-            extension = file.name[file.name.rfind('.'):].lower()
+            import os
+            extension = os.path.splitext(file.name)[1].lower()
             if extension not in valid_extensions:
                 raise forms.ValidationError('Выберите правильный формат файла.')
 

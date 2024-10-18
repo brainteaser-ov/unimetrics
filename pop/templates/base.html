@@ -1,3 +1,4 @@
+
 {% load static %}
 
 <!DOCTYPE html>
@@ -29,12 +30,43 @@
 
     <!-- Навигация -->
     <nav class="navbar navbar-expand-lg navbar-light fixed-top">
-      <!-- Навигационное меню -->
+      <a class="navbar-brand" href="{% url 'home' %}">Название сайта</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Переключить навигацию"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <!-- Остальные элементы меню -->
+        <ul class="navbar-nav ml-auto">
+          {% if user.is_authenticated %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'accounts:profile' %}">Профиль</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'accounts:logout' %}">Выйти</a>
+            </li>
+          {% else %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'accounts:login' %}">Войти</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'accounts:register' %}">Зарегистрироваться</a>
+            </li>
+          {% endif %}
+        </ul>
+      </div>
     </nav>
 
     <!-- Основной контент -->
-    <main class="container fade-in">
-
+    <main class="container fade-in" style="margin-top: 80px;">
         <!-- Блок для отображения сообщений -->
         {% if messages %}
           {% for message in messages %}

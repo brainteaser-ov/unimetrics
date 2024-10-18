@@ -1,8 +1,7 @@
 import pandas as pd
-from utils.utils import BaseWorker
-from pitch_extraction import intensity_df
-from utils.utils_transform import to_doc
-import numpy as np
+from .utils import BaseWorker
+
+
 
 class Rate:
     def __init__(self, df: pd.DataFrame):
@@ -63,6 +62,6 @@ class Rate:
         return result_df, ratios_df
 
 
-rate = Rate(intensity_df)
-processed_df, ratios_df = rate.process_data()
+# rate = Rate(intensity_df)
+# processed_df, ratios_df = rate.process_data()
 

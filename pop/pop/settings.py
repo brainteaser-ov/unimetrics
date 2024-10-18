@@ -109,3 +109,13 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 LOGIN_REDIRECT_URL = 'accounts:profile'  # Куда перенаправлять после входа
 LOGOUT_REDIRECT_URL = 'accounts:login'  # Куда перенаправлять после выхода
 LOGIN_URL = 'accounts:login'  # Страница входа
+
+from django.contrib.messages import constants as messages
+
+MESSAGE_TAGS = {
+    messages.DEBUG: 'secondary',
+    messages.INFO: 'info',
+    messages.SUCCESS: 'success',
+    messages.WARNING: 'warning',
+    messages.ERROR: 'danger',
+}

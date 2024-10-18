@@ -43,7 +43,7 @@ class DataObject(models.Model):
         return f"Файл {self.file.name} (загружен {uploaded_user.username})"
 
 class FileModel(models.Model):
-    uploaded_by = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Загрузил')
+    uploaded_by = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Загрузил', related_name='uploaded_files')
     file = models.FileField('Файл', upload_to='uploads/')
     upload_date = models.DateTimeField('Дата загрузки', auto_now_add=True)
 
@@ -51,10 +51,6 @@ class FileModel(models.Model):
         uploaded_user = self.uploaded_by
         return f"Файл {self.file.name} (загружен {uploaded_user.username})"
 
-
-# models.py
-
-# models.py
 
 class ProcessingResult(models.Model):
     ANALYSIS_TYPES = [
@@ -66,6 +62,9 @@ class ProcessingResult(models.Model):
     result_file = models.FileField(upload_to='processing_results/')
     analysis_type = models.CharField(max_length=20, choices=ANALYSIS_TYPES)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def get_analysis_type_display(self):
+        return dict(self.ANALYSIS_TYPES).get(self.analysis_type, self.analysis_type)
 
     def __str__(self):
         return f'Результат {self.get_analysis_type_display()} для {self.data_object.name}'

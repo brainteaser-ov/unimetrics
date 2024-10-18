@@ -20,20 +20,24 @@ from django.urls import path, include
 from django.contrib.auth import views as auth_views
 from django.conf import settings
 from django.conf.urls.static import static
-
+from database import views as database_views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+                  path('admin/', admin.site.urls),
+                  # path('', views.home, name='home'),
 
-    # Подключаем маршруты приложения 'database'
-    path('database/', include('database.urls', namespace='database')),
+                  # Подключаем маршруты приложения 'database'
+                  path('database/', include('database.urls', namespace='database')),
+                  path('', database_views.home, name='home'),
 
-    # Подключаем маршруты приложения 'tools'
-    path('tools/', include('tools.urls', namespace='tools')),
-    path('accounts/', include('accounts.urls', namespace='accounts')),
-    # path('accounts/login/', auth_views.LoginView.as_view(), name='login'),
-    # path('accounts/logout/', auth_views.LogoutView.as_view(), name='logout'),
+                  # Подключаем маршруты приложения 'tools'
+                  path('tools/', include('tools.urls', namespace='tools')),
+                  path('accounts/', include('django.contrib.auth.urls')),
 
-    # корневой маршрут
-    # path('', views.homepage, name='homepage'),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+                  path('accounts/', include('accounts.urls', namespace='accounts')),
+                  # path('accounts/login/', auth_views.LoginView.as_view(), name='login'),
+                  # path('accounts/logout/', auth_views.LogoutView.as_view(), name='logout'),
+
+                  # корневой маршрут
+                  # path('', views.homepage, name='homepage'),
+              ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

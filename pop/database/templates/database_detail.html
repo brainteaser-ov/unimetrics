@@ -5,7 +5,7 @@
 {% block content %}
 <h1>{{ database.name }}</h1>
 <p>Тип базы данных: {{ database.get_db_type_display }}</p>
-<a href="{% url 'add_data_object' database.pk %}">Добавить объект</a>
+<a href="{% url 'database:add_data_object' database.pk %}">Добавить объект</a>
 
 <h2>Объекты в базе данных</h2>
 <ul>

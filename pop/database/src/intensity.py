@@ -1,7 +1,7 @@
-from utils import BaseWorker
+from .utils import BaseWorker
 import pandas as pd
 import numpy as np
-from pitch_extraction import intensity_df
+# from pitch_extraction import intensity_df
 
 
 class Loudness():
@@ -62,8 +62,8 @@ class Loudness():
         return self.df, intensity_ratios
 
 
-loudness = Loudness(intensity_df, min_intensity=20, max_intensity=100)
-processed_df, intensity_ratios_df = loudness.process_data()
+# loudness = Loudness(intensity_df, min_intensity=20, max_intensity=100)
+# processed_df, intensity_ratios_df = loudness.process_data()
 
 
 

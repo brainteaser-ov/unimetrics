@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block title %}Вы вышли{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <p>Вы успешно вышли из системы.</p>
+    <a href="{% url 'home' %}">На главную страницу</a>
+</div>
+{% endblock %}

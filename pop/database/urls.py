@@ -1,5 +1,7 @@
 from django.urls import path
 from . import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 app_name = 'database'  # Пространство имен для приложения
 
@@ -9,4 +11,9 @@ urlpatterns = [
     path('databases/create/', views.create_database, name='create_database'),
     path('databases/<int:pk>/', views.database_detail, name='database_detail'),
     path('databases/<int:pk>/add_object/', views.add_data_object, name='add_data_object'),
+
+
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

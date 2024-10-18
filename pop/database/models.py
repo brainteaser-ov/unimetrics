@@ -21,6 +21,12 @@ class DataObject(models.Model):
         ('M', 'Мужской'),
         ('F', 'Женский'),
     )
+    STATUS_CHOICES = (
+        ('pending', 'Не обработан'),
+        ('processed', 'Обработан'),
+        ('error', 'Ошибка'),
+    )
+
     database = models.ForeignKey(Database, on_delete=models.CASCADE, related_name='objects', verbose_name='База данных')
     sequence_number = models.AutoField('Порядковый номер', primary_key=True)
     name = models.CharField('Название/Описание объекта', max_length=255)
@@ -46,10 +52,20 @@ class FileModel(models.Model):
         return f"Файл {self.file.name} (загружен {uploaded_user.username})"
 
 
+# models.py
+
+# models.py
+
 class ProcessingResult(models.Model):
-    data_object = models.ForeignKey(DataObject, on_delete=models.CASCADE, related_name='processing_results')
+    ANALYSIS_TYPES = [
+        ('vowels', 'Гласные'),
+        ('consonants', 'Согласные'),
+        ('prosody', 'Просодия'),
+    ]
+    data_object = models.ForeignKey(DataObject, on_delete=models.CASCADE)
     result_file = models.FileField(upload_to='processing_results/')
-    processed_at = models.DateTimeField(auto_now_add=True)
+    analysis_type = models.CharField(max_length=20, choices=ANALYSIS_TYPES)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Результат для {self.data_object.name} от {self.processed_at}"
+        return f'Результат {self.get_analysis_type_display()} для {self.data_object.name}'

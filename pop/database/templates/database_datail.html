@@ -9,18 +9,41 @@
 
 <h2>Объекты в базе данных</h2>
 <ul>
-    {% for obj in objects %}
+    {% for obj in data_objects %}
     <li>{{ obj.sequence_number }} - {{ obj.name }}</li>
     {% empty %}
     <li>В этой базе данных нет объектов.</li>
     {% endfor %}
 </ul>
 
-<h2>Инструменты</h2>
-<select name="tool">
-    <option value="analysis">Анализ текста</option>
-    <option value="task_creation">Создание техзадания</option>
-    <!-- Добавьте другие инструменты -->
-</select>
-<button type="button">Применить</button>
+<!-- Отображение сообщений -->
+{% if messages %}
+  {% for message in messages %}
+    <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+      {{ message }}
+    </div>
+  {% endfor %}
+{% endif %}
+
+<!-- Формы для запуска анализа -->
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" name="analysis_type" value="vowels">Анализировать гласные</button>
+    <button type="submit" name="analysis_type" value="consonants">Анализировать согласные</button>
+    <button type="submit" name="analysis_type" value="prosody">Анализировать просодию</button>
+</form>
+
+<!-- Отображение результатов анализа -->
+<h2>Результаты анализа</h2>
+<ul>
+    {% for result in processing_results %}
+    <li>
+        {{ result.data_object.name }} - {{ result.get_analysis_type_display }} -
+        <a href="{{ result.result_file.url }}">Скачать результат</a>
+    </li>
+    {% empty %}
+    <li>Нет результатов анализа.</li>
+    {% endfor %}
+</ul>
+
 {% endblock %}

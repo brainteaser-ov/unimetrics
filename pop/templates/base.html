@@ -1,5 +1,6 @@
 {% load static %}
 
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -33,12 +34,23 @@
 
     <!-- Основной контент -->
     <main class="container fade-in">
+
+        <!-- Блок для отображения сообщений -->
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %} mt-4">
+              {{ message }}
+            </div>
+          {% endfor %}
+        {% endif %}
+
+        <!-- Блок контента страницы -->
         {% block content %}{% endblock %}
     </main>
 
     <!-- Футер -->
     <footer>
-        &copy; {% now "Y" %} Штото надо придумать в название. Все права защищены.
+        &copy; {% now "Y" %} Название сайта. Все права защищены.
     </footer>
 
     <!-- Подключаем jQuery и Bootstrap JS -->

@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Главная{% endblock %}
+
+{% block content %}
+<h1>Добро пожаловать!</h1>
+<div class="panels">
+    <div class="panel">
+        <h2><a href="{% url 'database_list' %}">Базы данных</a></h2>
+    </div>
+    <div class="panel">
+        <h2><a href="#">Инструменты</a></h2>
+    </div>
+</div>
+{% endblock %}

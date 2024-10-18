@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Мои базы данных{% endblock %}
+
+{% block content %}
+<h1>Мои базы данных</h1>
+<a href="{% url 'create_database' %}">Создать новую базу данных</a>
+<ul>
+    {% for db in databases %}
+    <li><a href="{% url 'database_detail' db.pk %}">{{ db.name }}</a> ({{ db.get_db_type_display }})</li>
+    {% empty %}
+    <li>У вас нет баз данных.</li>
+    {% endfor %}
+</ul>
+{% endblock %}

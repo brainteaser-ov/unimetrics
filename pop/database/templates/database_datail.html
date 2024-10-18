@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ database.name }}{% endblock %}
+
+{% block content %}
+<h1>{{ database.name }}</h1>
+<p>Тип базы данных: {{ database.get_db_type_display }}</p>
+<a href="{% url 'add_data_object' database.pk %}">Добавить объект</a>
+
+<h2>Объекты в базе данных</h2>
+<ul>
+    {% for obj in objects %}
+    <li>{{ obj.sequence_number }} - {{ obj.name }}</li>
+    {% empty %}
+    <li>В этой базе данных нет объектов.</li>
+    {% endfor %}
+</ul>
+
+<h2>Инструменты</h2>
+<select name="tool">
+    <option value="analysis">Анализ текста</option>
+    <option value="task_creation">Создание техзадания</option>
+    <!-- Добавьте другие инструменты -->
+</select>
+<button type="button">Применить</button>
+{% endblock %}

@@ -1,15 +1,24 @@
 {% extends 'base.html' %}
-
+{% load num_utils %}
 {% block title %}Мои базы данных{% endblock %}
 
 {% block content %}
 <h1>Мои базы данных</h1>
 <a href="{% url 'database:create_database' %}">Создать новую базу данных</a>
-<ul>
-    {% for db in databases %}
-    <li><a href="{% url 'database:database_detail' db.pk %}">{{ db.name }}</a> ({{ db.get_db_type_display }})</li>
-    {% empty %}
-    <li>У вас нет баз данных.</li>
-    {% endfor %}
-</ul>
+
+<!-- Выводим сообщение с именем пользователя и количеством баз данных -->
+    <p>У вас {{ username }} {{ database_count }} {{ database_count|ru_pluralize:"база данных,базы данных,баз данных" }}.</p>
+
+
+<!-- Проверяем, есть ли базы данных -->
+{% if databases %}
+    <ul>
+        {% for db in databases %}
+            <li><a href="{% url 'database:database_detail' db.pk %}">{{ db.name }}</a> ({{ db.get_db_type_display }})</li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <!-- Если баз данных нет, можем вывести другое сообщение или оставить только информацию о количестве -->
+    <p>У вас пока нет баз данных.</p>
+{% endif %}
 {% endblock %}

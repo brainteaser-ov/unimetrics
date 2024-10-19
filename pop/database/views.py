@@ -24,13 +24,12 @@ def database_list(request):
 @login_required
 def database_detail(request, pk):
     database = get_object_or_404(Database, pk=pk)
-    data_objects = DataObject.objects.filter(database=database)
-
+    data_objects = database.data_objects.all()
     if request.method == 'POST':
         analysis_type = request.POST.get('analysis_type')
         if analysis_type not in ['vowels', 'consonants', 'prosody']:
             messages.error(request, 'Неизвестный тип анализа.')
-            return redirect('database_detail', pk=database.pk)
+            return redirect('database:database_detail', pk=database.pk)
 
         for data_object in data_objects:
             result = process_data(data_object, analysis_type)
@@ -39,9 +38,10 @@ def database_detail(request, pk):
             else:
                 messages.error(request, f'Ошибка при анализе "{analysis_type}" файла {data_object.name}.')
 
-        return redirect('database_detail', pk=database.pk)
+        return redirect('database:database_detail', pk=database.pk)
 
     processing_results = ProcessingResult.objects.filter(data_object__in=data_objects)
+
 
     context = {
         'database': database,
@@ -59,7 +59,7 @@ def create_database(request):
             database = form.save(commit=False)
             database.author = request.user
             database.save()
-            return redirect('database_detail', pk=database.pk)
+            return redirect('database:database_detail', pk=database.pk)
     else:
         form = DatabaseForm()
     return render(request, 'database/create_database.html', {'form': form})
@@ -75,28 +75,49 @@ def add_data_object(request, pk):
             data_object.database = database
             data_object.uploaded_by = request.user
             data_object.save()
-            return redirect('database_detail', pk=database.pk)
+            return redirect('database:database_detail', pk=database.pk)
         else:
-            form = DataObjectForm()
-        return render(request, 'database/add_data_object.html', {'form': form, 'database': database})
+            # Если форма недействительна, мы не создаем новую форму,
+            # а повторно отображаем ту же форму с ошибками
+            # (данные формы уже содержат введенные пользователем данные и ошибки)
+            pass  # ничего не делаем, переходим к отображению формы ниже
+    else:
+        # Если метод запроса не POST, создаем пустую форму
+        form = DataObjectForm()
 
+    # Отображаем форму (для метода GET и если форма недействительна при POST)
+    return render(request, 'database/adddataobject.html', {'form': form, 'database': database})
 @login_required
 def data_object_list(request):
     data_objects = DataObject.objects.filter(uploaded_by=request.user)
     return render(request, 'database/data_object_list.html', {'data_objects': data_objects})
 
+
 @login_required
-def process_selected_files(request):
+def process_selected_files(request, pk):
     if request.method == 'POST':
         selected_files = request.POST.getlist('selected_files')
+        analysis_type = request.POST.get('analysis_type')
+        if not selected_files:
+            messages.error(request, 'Пожалуйста, выберите хотя бы один файл для анализа.')
+            return redirect('database:database_detail', pk=pk)
+
+        if not analysis_type:
+            messages.error(request, 'Не указан тип анализа.')
+            return redirect('data_object_list')
+
+        if analysis_type not in ['vowels', 'consonants', 'prosody']:
+            messages.error(request, 'Неизвестный тип анализа.')
+            return redirect('data_object_list')
+
         if not selected_files:
             messages.error(request, 'Вы не выбрали ни одного файла для обработки.')
             return redirect('data_object_list')
 
         for object_id in selected_files:
             data_object = get_object_or_404(DataObject, pk=object_id, uploaded_by=request.user)
-            # Вызов функции обработки данных
-            processing_result = process_data(data_object)
+            # Вызов функции обработки данных с передачей analysis_type
+            processing_result = process_data(data_object, analysis_type)
             if processing_result:
                 data_object.status = 'processed'
                 data_object.save()
@@ -108,3 +129,13 @@ def process_selected_files(request):
         return redirect('processing_complete')
     else:
         return redirect('data_object_list')
+
+def my_databases_view(request):
+    databases = Database.objects.filter(user=request.user)
+    database_count = databases.count()
+    context = {
+        'databases': databases,
+        'database_count': database_count,
+        'username': request.user.username,
+    }
+    return render(request, 'your_template.html', context)

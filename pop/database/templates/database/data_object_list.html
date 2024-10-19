@@ -1,4 +1,5 @@
 <!-- templates/databases/data_object_list.html -->
+<!-- templates/databases/data_object_list.html -->
 
 {% extends 'base.html' %}
 
@@ -26,6 +27,22 @@
         {% endfor %}
       </tbody>
     </table>
+
+    <!-- Добавляем выбор типа анализа -->
+    <h3>Выберите тип анализа:</h3>
+    <div>
+      <input type="radio" id="analysis_vowels" name="analysis_type" value="vowels" required>
+      <label for="analysis_vowels">Анализировать гласные</label>
+    </div>
+    <div>
+      <input type="radio" id="analysis_consonants" name="analysis_type" value="consonants">
+      <label for="analysis_consonants">Анализировать согласные</label>
+    </div>
+    <div>
+      <input type="radio" id="analysis_prosody" name="analysis_type" value="prosody">
+      <label for="analysis_prosody">Анализировать просодию</label>
+    </div>
+
     <button type="submit">Обработать выбранные файлы</button>
   </form>
 {% endblock %}

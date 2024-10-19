@@ -21,7 +21,7 @@ def signup(request):
 @login_required
 def profile(request):
     user = request.user
-    dictionaries = user.dictionaries.all()
+    databases = user.database.all()
     files = user.uploaded_files.all()
     if hasattr(user, 'profile'):
         profile = user.profile
@@ -30,7 +30,7 @@ def profile(request):
 
     context = {
         'profile': profile,
-        'dictionaries': dictionaries,
+        'databases': databases,
         'files': files,
     }
     return render(request, 'accounts/profile.html', context)

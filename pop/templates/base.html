@@ -51,14 +51,20 @@
               <a class="nav-link" href="{% url 'accounts:profile' %}">Профиль</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'accounts:logout' %}">Выйти</a>
+              <form method="post" action="{% url 'accounts:logout' %}" style="display: inline;">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-link" style="display: inline; padding: 0; border: none; background: none;">
+          Выйти
+      </button>
+  </form>
+
             </li>
           {% else %}
             <li class="nav-item">
               <a class="nav-link" href="{% url 'accounts:login' %}">Войти</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'accounts:register' %}">Зарегистрироваться</a>
+              <a class="nav-link" href="{% url 'accounts:signup' %}">Зарегистрироваться</a>
             </li>
           {% endif %}
         </ul>

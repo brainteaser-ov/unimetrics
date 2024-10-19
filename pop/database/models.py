@@ -9,7 +9,7 @@ class Database(models.Model):
         ('image', 'С изображениями'),
     )
     name = models.CharField('Название базы данных', max_length=255)
-    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='dictionaries', verbose_name='Автор')
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='database', verbose_name='Автор')
     db_type = models.CharField('Тип базы данных', max_length=50, choices=DATABASE_TYPES)
     created_at = models.DateTimeField('Дата создания', auto_now_add=True)
 
@@ -27,7 +27,7 @@ class DataObject(models.Model):
         ('error', 'Ошибка'),
     )
 
-    database = models.ForeignKey(Database, on_delete=models.CASCADE, related_name='objects', verbose_name='База данных')
+    database = models.ForeignKey(Database, on_delete=models.CASCADE, related_name='data_objects', verbose_name='База данных')
     sequence_number = models.AutoField('Порядковый номер', primary_key=True)
     name = models.CharField('Название/Описание объекта', max_length=255)
     language = models.CharField('Язык', max_length=100)

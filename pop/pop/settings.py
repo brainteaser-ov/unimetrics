@@ -106,8 +106,8 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # settings.py
 # pop/settings.py
 
-LOGIN_REDIRECT_URL = 'accounts:profile'  # Куда перенаправлять после входа
-LOGOUT_REDIRECT_URL = 'accounts:login'  # Куда перенаправлять после выхода
+LOGIN_REDIRECT_URL = 'home'  # Куда перенаправлять после входа
+LOGOUT_REDIRECT_URL = 'home'  # Куда перенаправлять после выхода
 LOGIN_URL = 'accounts:login'  # Страница входа
 
 from django.contrib.messages import constants as messages

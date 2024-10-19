@@ -1,0 +1,134 @@
+File type = "ooTextFile"
+Object class = "TextGrid"
+
+xmin = 0 
+xmax = 5.588 
+tiers? <exists> 
+size = 1 
+item []: 
+    item [1]:
+        class = "IntervalTier" 
+        name = "sound" 
+        xmin = 0 
+        xmax = 5.588 
+        intervals: size = 30 
+        intervals [1]:
+            xmin = 0 
+            xmax = 1.599806090428822 
+            text = "" 
+        intervals [2]:
+            xmin = 1.599806090428822 
+            xmax = 1.6914091468349188 
+            text = "e" 
+        intervals [3]:
+            xmin = 1.6914091468349188 
+            xmax = 1.823999161299514 
+            text = "" 
+        intervals [4]:
+            xmin = 1.823999161299514 
+            xmax = 1.8609471813592091 
+            text = "i" 
+        intervals [5]:
+            xmin = 1.8609471813592091 
+            xmax = 2.0108319662262146 
+            text = "" 
+        intervals [6]:
+            xmin = 2.0108319662262146 
+            xmax = 2.102262659933257 
+            text = "o" 
+        intervals [7]:
+            xmin = 2.102262659933257 
+            xmax = 2.2439782946654687 
+            text = "" 
+        intervals [8]:
+            xmin = 2.2439782946654687 
+            xmax = 2.333699101132876 
+            text = "a" 
+        intervals [9]:
+            xmin = 2.333699101132876 
+            xmax = 2.5936060032370407 
+            text = "" 
+        intervals [10]:
+            xmin = 2.5936060032370407 
+            xmax = 2.6369598407545918 
+            text = "a" 
+        intervals [11]:
+            xmin = 2.6369598407545918 
+            xmax = 2.7843449845551147 
+            text = "" 
+        intervals [12]:
+            xmin = 2.7843449845551147 
+            xmax = 2.8471196031628216 
+            text = "o" 
+        intervals [13]:
+            xmin = 2.8471196031628216 
+            xmax = 3.059839152875199 
+            text = "" 
+        intervals [14]:
+            xmin = 3.059839152875199 
+            xmax = 3.1518190753271336 
+            text = "e" 
+        intervals [15]:
+            xmin = 3.1518190753271336 
+            xmax = 3.3900878970244532 
+            text = "" 
+        intervals [16]:
+            xmin = 3.3900878970244532 
+            xmax = 3.4340552280266268 
+            text = "y" 
+        intervals [17]:
+            xmin = 3.4340552280266268 
+            xmax = 3.5535493726878364 
+            text = "" 
+        intervals [18]:
+            xmin = 3.5535493726878364 
+            xmax = 3.622581086551264 
+            text = "a" 
+        intervals [19]:
+            xmin = 3.622581086551264 
+            xmax = 3.6824521938356596 
+            text = "e" 
+        intervals [20]:
+            xmin = 3.6824521938356596 
+            xmax = 3.8038088797074745 
+            text = "" 
+        intervals [21]:
+            xmin = 3.8038088797074745 
+            xmax = 3.842741457668365 
+            text = "a" 
+        intervals [22]:
+            xmin = 3.842741457668365 
+            xmax = 3.954097085917887 
+            text = "" 
+        intervals [23]:
+            xmin = 3.954097085917887 
+            xmax = 4.011609115392719 
+            text = "o" 
+        intervals [24]:
+            xmin = 4.011609115392719 
+            xmax = 4.184222892006371 
+            text = "" 
+        intervals [25]:
+            xmin = 4.184222892006371 
+            xmax = 4.223762412270318 
+            text = "a" 
+        intervals [26]:
+            xmin = 4.223762412270318 
+            xmax = 4.354822360648557 
+            text = "" 
+        intervals [27]:
+            xmin = 4.354822360648557 
+            xmax = 4.4899756299144125 
+            text = "a" 
+        intervals [28]:
+            xmin = 4.4899756299144125 
+            xmax = 4.678857364925989 
+            text = "" 
+        intervals [29]:
+            xmin = 4.678857364925989 
+            xmax = 4.845642250403002 
+            text = "a" 
+        intervals [30]:
+            xmin = 4.845642250403002 
+            xmax = 5.588 
+            text = "" 

@@ -1,0 +1,15 @@
+<!-- templates/database/delete_database_confirm.html -->
+
+{% extends 'base.html' %}
+
+{% block title %}Удалить базу данных{% endblock %}
+
+{% block content %}
+  <h1>Удалить базу данных "{{ database.name }}"?</h1>
+  <p>Вы уверены, что хотите удалить эту базу данных? Это действие невозможно отменить.</p>
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit">Да, удалить</button>
+    <a href="{% url 'database:database_detail' database.pk %}">Отмена</a>
+  </form>
+{% endblock %}

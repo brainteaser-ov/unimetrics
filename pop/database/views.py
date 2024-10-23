@@ -1,12 +1,14 @@
+import logging
 
-from .utils_a import process_data
-from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .models import Database, DataObject, ProcessingResult
-from .forms import DatabaseForm, DataObjectForm
+from django.core.paginator import Paginator
+from django.http import HttpResponseForbidden
+from django.shortcuts import get_object_or_404, redirect, render
 
-import logging
+from .forms import DatabaseForm, DataObjectForm
+from .models import Database, DataObject, ProcessingResult
+from .utils_a import process_data
 
 logger = logging.getLogger(__name__)
 
@@ -42,7 +44,6 @@ def database_detail(request, pk):
 
     processing_results = ProcessingResult.objects.filter(data_object__in=data_objects)
 
-
     context = {
         'database': database,
         'data_objects': data_objects,
@@ -63,6 +64,34 @@ def create_database(request):
     else:
         form = DatabaseForm()
     return render(request, 'database/create_database.html', {'form': form})
+
+
+@login_required
+def update_database(request, pk):
+    database = get_object_or_404(Database, pk=pk)
+    if database.author != request.user:
+        return HttpResponseForbidden()
+    if request.method == 'POST':
+        form = DatabaseForm(request.POST, instance=database)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'База данных успешно обновлена.')
+            return redirect('database:database_detail', pk=database.pk)
+    else:
+        form = DatabaseForm(instance=database)
+    return render(request, 'database/update_database.html', {'form': form})
+
+
+@login_required
+def delete_database(request, pk):
+    database = get_object_or_404(Database, pk=pk)
+    if database.author != request.user:
+        return HttpResponseForbidden()
+    if request.method == 'POST':
+        database.delete()
+        messages.success(request, 'База данных успешно удалена.')
+        return redirect('accounts:profile')
+    return render(request, 'database/delete_database_confirm.html', {'database': database})
 
 
 @login_required
@@ -87,6 +116,58 @@ def add_data_object(request, pk):
 
     # Отображаем форму (для метода GET и если форма недействительна при POST)
     return render(request, 'database/adddataobject.html', {'form': form, 'database': database})
+
+@login_required
+def edit_data_object(request, db_pk, pk):
+    # Получаем объекты базы данных и данных
+    database = get_object_or_404(Database, pk=db_pk)
+    data_object = get_object_or_404(DataObject, pk=pk, database=database)
+
+    # Проверяем права пользователя
+    if database.author != request.user:
+        messages.error(request, 'У вас нет прав для редактирования этого объекта.')
+        return redirect('database:database_detail', pk=database.pk)
+
+    # Обработка данных формы
+    if request.method == 'POST':
+        form = DataObjectForm(request.POST, request.FILES, instance=data_object)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Объект успешно обновлен.')
+            return redirect('database:database_detail', pk=database.pk)
+    else:
+        form = DataObjectForm(instance=data_object)
+
+    # Подготовка и отображение шаблона
+    context = {
+        'form': form,
+        'database': database,
+        'data_object': data_object,
+    }
+    return render(request, 'database/edit_data_object.html', context)
+
+@login_required
+def delete_data_object(request, db_pk, pk):
+    database = get_object_or_404(Database, pk=db_pk)
+    data_object = get_object_or_404(DataObject, pk=pk, database=database)
+
+    # Проверяем, имеет ли пользователь права на удаление
+    if database.author != request.user:
+        messages.error(request, 'У вас нет прав для удаления этого объекта.')
+        return redirect('database:database_detail', pk=database.pk)
+
+    if request.method == 'POST':
+        data_object.delete()
+        messages.success(request, 'Объект успешно удален.')
+        return redirect('database:database_detail', pk=database.pk)
+
+    context = {
+        'database': database,
+        'data_object': data_object,
+    }
+
+    return render(request, 'database/delete_data_object.html', context)
+
 @login_required
 def data_object_list(request):
     data_objects = DataObject.objects.filter(uploaded_by=request.user)
@@ -130,8 +211,10 @@ def process_selected_files(request, pk):
     else:
         return redirect('data_object_list')
 
+
+@login_required
 def my_databases_view(request):
-    databases = Database.objects.filter(user=request.user)
+    databases = Database.objects.filter(author=request.user)
     database_count = databases.count()
     context = {
         'databases': databases,
@@ -139,3 +222,40 @@ def my_databases_view(request):
         'username': request.user.username,
     }
     return render(request, 'your_template.html', context)
+
+
+@login_required
+def database_detail(request, pk):
+    database = get_object_or_404(Database, pk=pk)
+    data_object_list = database.data_objects.all()
+    # Пагинация
+    paginator = Paginator(data_object_list, 10)  # Показывать 10 объектов на странице
+    page_number = request.GET.get('page')
+    data_objects = paginator.get_page(page_number)
+
+    # Получение результатов анализа
+    processing_results = ProcessingResult.objects.filter(
+        data_object__in=data_object_list
+    )
+
+    # Обработка POST-запроса для запуска анализа
+    if request.method == 'POST':
+        analysis_type = request.POST.get('analysis_type')
+        if analysis_type not in ['vowels', 'consonants', 'prosody']:
+            messages.error(request, 'Неизвестный тип анализа.')
+            return redirect('database:database_detail', pk=database.pk)
+
+        for data_object in data_object_list:
+            # Предполагаем, что функция process_data возвращает True или False
+            result = process_data(data_object, analysis_type)
+            if result:
+                messages.success(request, f'Анализ "{analysis_type}" для файла {data_object.name} успешно завершен.')
+            else:
+                messages.error(request, f'Ошибка при анализе "{analysis_type}" файла {data_object.name}.')
+
+    context = {
+        'database': database,
+        'data_objects': data_objects,
+        'processing_results': processing_results,
+    }
+    return render(request, 'database/database_detail.html', context)

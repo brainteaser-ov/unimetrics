@@ -1,5 +1,6 @@
 from django import forms
 
+
 class TextAnalysisForm(forms.Form):
     # Поля формы будут добавлены позже
     pass

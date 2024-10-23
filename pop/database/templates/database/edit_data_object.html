@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Редактировать объект {{ data_object.name }}{% endblock %}
+
+{% block content %}
+<h1>Редактировать объект "{{ data_object.name }}"</h1>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Сохранить изменения</button>
+    <a href="{% url 'database:database_detail' database.pk %}">Отмена</a>
+</form>
+
+{% endblock %}

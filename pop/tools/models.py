@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class TextAnalysis(models.Model):
     # Поля модели будут добавлены позже
     pass

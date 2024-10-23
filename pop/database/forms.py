@@ -1,4 +1,5 @@
 from django import forms
+
 from .models import Database, DataObject
 
 
@@ -15,12 +16,13 @@ class DatabaseForm(forms.ModelForm):
 class DataObjectForm(forms.ModelForm):
     class Meta:
         model = DataObject
-        fields = ['name', 'language', 'text', 'file', 'gender', 'age', 'region', 'database']
+        fields = ['name', 'language', 'text', 'file', 'gender', 'age', 'region', 'database', 'annotation_file']
         labels = {
             'name': 'Название/Описание объекта',
             'language': 'Язык',
             'text': 'Текст',
             'file': 'Файл',
+            'annotation_file': 'Аннотация',
             'gender': 'Пол',
             'age': 'Возраст',
             'region': 'Регион',

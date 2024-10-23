@@ -1,4 +1,4 @@
-<!-- accounts/templates/accounts/profile.html -->
+
 {% extends 'base.html' %}
 
 {% block title %}Личный кабинет{% endblock %}
@@ -13,22 +13,36 @@
         <img src="{{ profile.avatar.url }}" alt="Аватар">
     {% endif %}
 {% endif %}
+{% if user.is_superuser %}
+    <p>
+        <a href="{% url 'admin:index' %}" class="btn btn-secondary">Перейти в админку</a>
+    </p>
+{% endif %}
 
 <p><a href="{% url 'accounts:password_change' %}">Сменить пароль</a></p>
 <form method="post" action="{% url 'accounts:logout' %}" style="display: inline;">
-                  {% csrf_token %}
-                  <button type="submit" class="btn btn-link nav-link" style="display: inline; padding: 0; border: none; background: none;">
-                      Выйти
-                  </button>
-              </form>
-
-
+    {% csrf_token %}
+    <button type="submit" class="btn btn-link nav-link" style="display: inline; padding: 0; border: none; background: none;">
+        Выйти
+    </button>
+</form>
 
 <h2>Ваши базы данных:</h2>
 <ul>
    {% for database in databases %}
-
-        <li>{{ database.name }} ({{ database.get_db_type_display }})</li>
+        <li>
+            <a href="{% url 'database:database_detail' database.pk %}">
+                {{ database.name }}
+            </a>
+            ({{ database.get_db_type_display }})
+            |
+            <a href="{% url 'database:update_database' database.pk %}">Изменить</a>
+            |
+            <form action="{% url 'database:delete_database' database.pk %}" method="post" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" onclick="return confirm('Вы уверены, что хотите удалить эту базу данных?');">Удалить</button>
+            </form>
+        </li>
     {% empty %}
         <li>У вас нет созданных словарей.</li>
     {% endfor %}
@@ -42,5 +56,4 @@
         <li>У вас нет загруженных файлов.</li>
     {% endfor %}
 </ul>
-
 {% endblock %}

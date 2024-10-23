@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import TextAnalysis, Specification, NeuralNetwork
+
+from .models import NeuralNetwork, Specification, TextAnalysis
 
 
 @admin.register(TextAnalysis)

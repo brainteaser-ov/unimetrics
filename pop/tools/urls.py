@@ -1,4 +1,5 @@
 from django.urls import path
+
 from . import views
 
 app_name = 'tools'  # Пространство имен для приложения

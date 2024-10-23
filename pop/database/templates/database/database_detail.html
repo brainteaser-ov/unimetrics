@@ -8,13 +8,72 @@
 <a href="{% url 'database:add_data_object' database.pk %}">Добавить объект</a>
 
 <h2>Объекты в базе данных</h2>
-<ul>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+
+            <th>Название</th>
+            <th>Язык</th>
+            <th>Комментарий</th>
+            <th>Пол</th>
+            <th>Возраст</th>
+            <th>Регион</th>
+            <th>Дата создания</th>
+            <th>Файл</th>
+            <th>Аннотация</th>
+            <!-- Добавьте другие необходимые поля -->
+        </tr>
+    </thead>
+    <tbody>
     {% for obj in data_objects %}
-    <li>{{ obj.sequence_number }} - {{ obj.name }}</li>
+        <tr>
+
+            <td>{{ obj.name }}</td>
+            <td>{{ obj.language }}</td>
+            <td>{{ obj.text }}</td>
+            <td>{{ obj.get_gender_display }}</td>
+            <td>{{ obj.age }}</td>
+            <td>{{ obj.region }}</td>
+            <td>{{ obj.created_at|date:"d.m.Y H:i" }}</td>
+            <td><a href="{{ obj.file.url }}">Скачать</a></td>
+            <td><a href="{{ obj.annotation_file.url }}">Скачать</a></td>
+
+            <td>
+                <!-- Ссылки на редактирование и удаление -->
+                <a href="{% url 'database:edit_data_object' database.pk obj.pk %}">Редактировать</a> |
+                <a href="{% url 'database:delete_data_object' database.pk obj.pk %}">Удалить</a>
+            </td>
+
+            <!-- Добавьте другие необходимые поля -->
+        </tr>
     {% empty %}
-    <li>В этой базе данных нет объектов.</li>
+        <tr>
+            <td colspan="9">В этой базе данных нет объектов.</td>
+        </tr>
     {% endfor %}
-</ul>
+    </tbody>
+</table>
+
+<!-- Элементы управления пагинацией -->
+<div class="pagination">
+    <span class="page-links">
+        {% if data_objects.has_previous %}
+            <a href="?page=1">&laquo; Первая</a>
+            <a href="?page={{ data_objects.previous_page_number }}">&lsaquo; Предыдущая</a>
+        {% endif %}
+
+        <span class="current">
+            Страница {{ data_objects.number }} из {{ data_objects.paginator.num_pages }}.
+        </span>
+
+        {% if data_objects.has_next %}
+            <a href="?page={{ data_objects.next_page_number }}">Следующая &rsaquo;</a>
+            <a href="?page={{ data_objects.paginator.num_pages }}">Последняя &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+
 
 <!-- Отображение сообщений -->
 {% if messages %}

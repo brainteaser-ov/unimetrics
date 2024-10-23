@@ -1,6 +1,6 @@
 import pandas as pd
-from .utils import BaseWorker
 
+from .utils import BaseWorker
 
 
 class Rate:

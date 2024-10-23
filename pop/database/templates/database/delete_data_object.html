@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Удалить объект {{ data_object.name }}{% endblock %}
+
+{% block content %}
+<h1>Удалить объект "{{ data_object.name }}"?</h1>
+
+<p>Вы уверены, что хотите удалить этот объект? Это действие нельзя отменить.</p>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Да, удалить</button>
+    <a href="{% url 'database:database_detail' database.pk %}">Нет, вернуться назад</a>
+</form>
+
+{% endblock %}

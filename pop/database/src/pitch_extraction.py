@@ -1,18 +1,28 @@
+import logging
 import os
-import parselmouth
+
 import pandas as pd
+import parselmouth
+
+logger = logging.getLogger(__name__)
+
 
 class MainData:
-    def __init__(self, audio_file):
-        self.audio_file = audio_file
+    def __init__(self, audio_files):
+        if isinstance(audio_files, str):
+            self.audio_files = [audio_files]
+        else:
+            self.audio_files = audio_files
 
-    def get_duration(self):
-        sound = parselmouth.Sound(self.audio_file)
+    def get_duration(self, file):
+        sound = parselmouth.Sound(file)
         return sound.duration
+
+
 
     def analyze_pitch(self):
         pitch_data = []
-        for file in self.audio_file:
+        for file in self.audio_files:
             sound = parselmouth.Sound(file)
             pitch = sound.to_pitch()
             pitch_values = pitch.selected_array['frequency']
@@ -26,7 +36,7 @@ class MainData:
                     "Start pitch": int(next((x for x in pitch_values if x != 0), 0)),
                     "End pitch": int(next((x for x in reversed(pitch_values) if x != 0), 0)),
                     "Mean pitch": int(sum(filtered_pitch) / len(filtered_pitch)),
-                    "Duration": round(self.get_duration(), 3)
+                    "Duration": round(self.get_duration(file), 3)
                 }
             else:
                 pitch_info = {
@@ -36,7 +46,7 @@ class MainData:
                     "Start pitch": 0,
                     "End pitch": 0,
                     "Mean pitch": 0,
-                    "Duration": round(self.get_duration(), 3)
+                    "Duration": round(self.get_duration(file), 3)
                 }
             pitch_data.append(pitch_info)
 
@@ -44,7 +54,7 @@ class MainData:
 
     def analyze_intensity(self):
         intensity_data = []
-        for file in self.audio_file:
+        for file in self.audio_files:
             sound = parselmouth.Sound(file)
             intensity = sound.to_intensity()
             intensity_values = intensity.values[0]
@@ -56,11 +66,12 @@ class MainData:
                 "Start intensity": int(next((x for x in intensity_values if x > 0), 0)),
                 "End intensity": int(intensity_values[-1]),
                 "Mean intensity": int(sum(intensity_values) / len(intensity_values)),
-                "Duration": round(self.get_duration(), 3)
+                "Duration": round(self.get_duration(file), 3)
             }
             intensity_data.append(intensity_info)
 
         return pd.DataFrame(intensity_data)
+
 
     def get_datasets(self):
         pitch_df = self.analyze_pitch()

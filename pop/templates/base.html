@@ -1,103 +1,93 @@
-
-{% load static %}
-
 <!DOCTYPE html>
+{% load static %}
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}Мой сайт{% endblock %}</title>
-
-    <!-- Подключаем Bootstrap CSS -->
-    <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-    />
-
-    <!-- Подключаем Google Fonts -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap"
-      rel="stylesheet"
-    />
-
+    <title>{% block title %}SAS{% endblock %}</title>
+    <!-- Подключение Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
     <!-- Ваши стили -->
-    <link rel="stylesheet" href="{% static 'styles.css' %}">
-
-    <style>
-        /* Ваши стили */
-    </style>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 <body>
+    <div class="wrapper">
+        <!-- Шапка сайта -->
 
-    <!-- Навигация -->
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
-      <a class="navbar-brand" href="{% url 'home' %}">Название сайта</a>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target="#navbarNav"
-        aria-controls="navbarNav"
-        aria-expanded="false"
-        aria-label="Переключить навигацию"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
+    <header class="site-header">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <!-- Название сайта слева -->
+            <a class="navbar-brand" href="{% url 'home' %}">SAS</a>
 
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <!-- Остальные элементы меню -->
-        <ul class="navbar-nav ml-auto">
-          {% if user.is_authenticated %}
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'accounts:profile' %}">Профиль</a>
-            </li>
-            <li class="nav-item">
-              <form method="post" action="{% url 'accounts:logout' %}" style="display: inline;">
-      {% csrf_token %}
-      <button type="submit" class="btn btn-link" style="display: inline; padding: 0; border: none; background: none;">
-          Выйти
-      </button>
-  </form>
+            <!-- Кнопка для мобильного меню -->
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Переключить навигацию">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-            </li>
-          {% else %}
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'accounts:login' %}">Войти</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'accounts:signup' %}">Зарегистрироваться</a>
-            </li>
-          {% endif %}
-        </ul>
-      </div>
-    </nav>
+            <!-- Элементы навигации -->
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <!-- Левая часть меню -->
+                <ul class="navbar-nav mr-auto">
+                    {% if user.is_authenticated %}
+                        <!-- Кнопка "Профиль" слева -->
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'accounts:profile' %}">Профиль</a>
+                        </li>
+                    {% endif %}
+                </ul>
 
-    <!-- Основной контент -->
-    <main class="container fade-in" style="margin-top: 80px;">
-        <!-- Блок для отображения сообщений -->
-        {% if messages %}
-          {% for message in messages %}
-            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %} mt-4">
-              {{ message }}
+                <!-- Правая часть меню -->
+                <ul class="navbar-nav ml-auto">
+                    {% if user.is_authenticated %}
+                        <!-- Кнопка "Выйти" справа -->
+                        <li class="nav-item">
+                            <form method="post" action="{% url 'accounts:logout' %}" class="d-inline">
+                                {% csrf_token %}
+                                <button type="submit" class="nav-link btn btn-link" style="padding: 0; margin: 0; border: none; background: none;">
+                                    Выйти
+                                </button>
+                            </form>
+                        </li>
+                    {% else %}
+                        <!-- Кнопки "Войти" и "Зарегистрироваться" для неавторизованных пользователей -->
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'accounts:login' %}">Войти</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'accounts:signup' %}">Зарегистрироваться</a>
+                        </li>
+                    {% endif %}
+                </ul>
             </div>
-          {% endfor %}
-        {% endif %}
-
-        <!-- Блок контента страницы -->
-        {% block content %}{% endblock %}
+        </div>
+    </nav>
+</header>
+    <!-- Основное содержимое -->
+    <main class="container">
+        {% block content %}
+        {% endblock %}
     </main>
 
-    <!-- Футер -->
+     <!-- Футер сайта -->
     <footer>
-        &copy; {% now "Y" %} Название сайта. Все права защищены.
+        <div class="container text-center">
+            <!-- Текст с названием сайта и ссылкой на другой сайт -->
+            <p>&copy; 2024 SAS. Все права защищены. <a href="https://pgu.ru/information/structure/centers/detail.php?ELEMENT_ID=990917">НОЦ Интеллектуальный анализ данных</a></p>
+
+            <!-- Ссылки "Техподдержка" и "Напишите нам" -->
+            <div class="mt-4">
+                <a href="https://t.me/+DjLGygbIU7Q4ZTZi">Техподдержка</a>
+                <a href="{% url 'database:contact' %}">Напишите нам</a>
+            </div>
+        </div>
     </footer>
 
-    <!-- Подключаем jQuery и Bootstrap JS -->
+    <!-- Подключение Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script
-              src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"
-    ></script>
-    <script
-      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
-    ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        </div>
 </body>
 </html>

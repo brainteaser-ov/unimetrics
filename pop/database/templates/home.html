@@ -1,15 +1,57 @@
-{% extends 'base.html' %}
 
+{% extends 'base.html' %}
+{% load static %}
 {% block title %}Главная{% endblock %}
 
 {% block content %}
-<h1>Добро пожаловать!</h1>
-<div class="panels">
-    <div class="panel">
-        <h2><a href="{% url 'database:database_list' %}">Базы данных</a></h2>
-    </div>
-    <div class="panel">
-        <h2><a href="#">Инструменты</a></h2>
+<div class="mt-4">
+    <div class="row">
+        <!-- Левая колонка -->
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h3 class="card-title">Добро пожаловать, {{ user.username }}!</h3>
+                    <p class="card-text">Пока мы не очень красивые, но мы стараемся.</p>
+                    <img src="{% static 'images/welcome-image.jpg' %}" alt="Добро пожаловать" class="img-fluid" style="width: 100%; height: auto;">
+                </div>
+            </div>
+        </div>
+
+        <!-- Правая колонка -->
+        <div class="col-md-8">
+
+            <ul class="list-group">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                        <a href="{% url 'database:database_list' %}">Базы данных</a>
+                        <small class="text-muted">Просмотр и управление вашими базами данных</small>
+                    </div>
+                    <div>
+                        <a href="{% url 'database:create_database' %}" class="btn btn-outline-secondary btn-sm">Создать новую</a>
+                    </div>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                        <a href="#">Инструменты</a>
+                        <small class="text-muted">(мы пока в разработке)</small>
+                    </div>
+                    <div>
+                        <button class="btn btn-outline-secondary btn-sm" disabled>Скоро</button>
+                    </div>
+                </li>
+                {% if user.is_superuser %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                        <a href="{% url 'admin:index' %}">Администрирование</a>
+                        <small class="text-muted">Управление сайтом</small>
+                    </div>
+                    <div>
+                        <a href="{% url 'admin:index' %}" class="btn btn-outline-secondary btn-sm">Перейти</a>
+                    </div>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
     </div>
 </div>
 {% endblock %}

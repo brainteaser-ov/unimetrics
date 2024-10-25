@@ -20,4 +20,8 @@ urlpatterns = [
          name='password_change_done'),
     # Личный кабинет
     path('profile/', views.profile, name='profile'),
+    path('file/<int:pk>/', views.file_detail, name='file_detail'),
+    path('profile/edit/', views.profile_edit, name='profile_edit'),
+
+
 ]

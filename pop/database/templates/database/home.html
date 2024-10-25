@@ -3,13 +3,33 @@
 {% block title %}Главная{% endblock %}
 
 {% block content %}
-<h1>Добро пожаловать!</h1>
-<div class="panels">
-    <div class="panel">
-        <h2><a href="{% url 'database:database_list' %}">Базы данных</a></h2>
-    </div>
-    <div class="panel">
-        <h2><a href="#">Инструменты</a></h2>
+<div class="container mt-4">
+    <div class="row">
+        <!-- Левая колонка -->
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h3 class="card-title">Добро пожаловать!</h3>
+                    <p class="card-text">Рады видеть вас на нашем сайте.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Правая колонка -->
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h2 class="card-title"><a href="{% url 'database:database_list' %}">Базы данных</a></h2>
+                    <p class="card-text">Управляйте своими базами данных здесь.</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title"><a href="#">Инструменты (мы пока в разработке)</a></h2>
+                    <p class="card-text">Скоро здесь появятся новые инструменты.</p>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}

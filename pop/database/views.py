@@ -5,8 +5,11 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.http import HttpResponseForbidden
 from django.shortcuts import get_object_or_404, redirect, render
+from django.core.mail import send_mail
+from django.contrib import messages
 
-from .forms import DatabaseForm, DataObjectForm
+
+from .forms import DatabaseForm, DataObjectForm, ContactForm
 from .models import Database, DataObject, ProcessingResult
 from .utils_a import process_data
 
@@ -20,7 +23,13 @@ def home(request):
 @login_required
 def database_list(request):
     databases = Database.objects.all()
-    return render(request, 'database/database_list.html', {'database': databases})
+    database_count = databases.count()
+    username = request.user.username
+    return render(request, 'database/database_list.html', {
+        'databases': databases,
+        'database_count': database_count,
+        'username': username
+    })
 
 
 @login_required
@@ -259,3 +268,24 @@ def database_detail(request, pk):
         'processing_results': processing_results,
     }
     return render(request, 'database/database_detail.html', context)
+
+def contact_view(request):
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            # Обработка данных формы
+            subject = 'Новое сообщение от {}'.format(form.cleaned_data['name'])
+            message = form.cleaned_data['message']
+            sender = form.cleaned_data['email']
+            recipients = ['gbshine20@gmail.com']  # Замените на ваш email
+
+            try:
+                send_mail(subject, message, sender, recipients)
+                messages.success(request, 'Ваше сообщение отправлено!')
+            except Exception as e:
+                messages.error(request, 'Ошибка при отправке сообщения. Попробуйте позже.')
+
+            return redirect('home')  # Перенаправление на главную страницу
+    else:
+        form = ContactForm()
+    return render(request, 'database/contact.html', {'form': form})

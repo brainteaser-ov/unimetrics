@@ -16,8 +16,7 @@ urlpatterns = [
     path('database/<int:pk>/delete/', views.delete_database, name='delete_database'),
     path('database/<int:db_pk>/object/<int:pk>/edit/', views.edit_data_object, name='edit_data_object'),
     path('database/<int:db_pk>/object/<int:pk>/delete/', views.delete_data_object, name='delete_data_object'),
-
-    # Новый маршрут для обработки выбранных файлов
+    path('database/contact/', views.contact_view, name='contact'),
     path('data_objects/process_selected/', views.process_selected_files, name='process_selected_files'),
 ]
 

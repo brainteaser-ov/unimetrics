@@ -1,54 +1,113 @@
-  /* Общие стили для всего сайта */
+/* Подключение шрифта Open Sans */
+@font-face {
+    font-family: 'Open Sans';
+    src: url('../fonts/OpenSans-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
 
-  body {
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-  }
+/* Шрифты и базовые стили */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Open Sans', Arial, sans-serif;
+    background-color: #ffffff; /* Устанавливаем белый фон */
+}
 
-  header, footer {
-      background-color: #333;
-      color: #fff;
-      padding: 20px;
-      text-align: center;
-  }
+main.container {
+    padding: 20px;
+}
 
-  nav ul {
-      list-style-type: none;
-      margin: 0;
-      padding: 0;
-  }
+/* Стили для заголовка сайта */
+.navbar {
+    background-color: #8a8a8a; /* Светло-серый фон */
+}
 
-  nav ul li {
-      display: inline;
-      margin-right: 10px;
-  }
+.navbar-brand {
+    font-weight: bold;
+}
 
-  nav ul li a {
-      color: #fff;
-      text-decoration: none;
-  }
+.nav-link {
+    color: #333;
+}
 
-  main {
-      padding: 20px;
-  }
+.nav-link:hover {
+    color: #555;
+}
 
-  a {
-      color: #007bff;
-      text-decoration: none;
-  }
+/* Стили для футера */
+footer {
+    background-color: #333;
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+}
 
-  a:hover {
-      text-decoration: underline;
-  }
+/* Убираем классы .btn, если они не используются */
+footer a {
+    color: #007bff;
+    text-decoration: none;
+    margin: 0 5px;
+}
 
-  @font-face {
-      font-family: 'Open Sans';
-      src: url('../fonts/OpenSans-Regular.ttf') format('truetype');
-      font-weight: normal;
-      font-style: normal;
-  }
+footer a:hover {
+    text-decoration: underline;
+}
 
-  body {
-      font-family: 'Open Sans', Arial, sans-serif;
-  }
+/* Стили для панели */
+.panels {
+    margin-top: 20px;
+}
+
+.panel h2 {
+    font-size: 24px;
+}
+
+.panel a {
+    text-decoration: none;
+}
+
+.panel a:hover {
+    text-decoration: underline;
+}
+
+/* Ограничение размера изображения */
+.col-md-4 img {
+    max-width: 100%;
+    max-height: 400px;
+    height: auto;
+}
+
+/* Стили для ссылок */
+a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Устанавливаем высоту html и body на 100% */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+/* Контейнер для всей страницы */
+.wrapper {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Основное содержимое страницы */
+main.container {
+    flex: 1;
+}
+
+/* Футер */
+footer {
+    flex-shrink: 0;
+}

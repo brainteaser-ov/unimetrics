@@ -1,0 +1,12 @@
+<!-- accounts/file_detail.html -->
+{% extends 'base.html' %}
+
+{% block title %}Файл {{ file.file.name }}{% endblock %}
+
+{% block content %}
+<h1>{{ file.file.name }}</h1>
+<p>Загружен: {{ file.upload_date }}</p>
+<p>
+    <a href="{{ file.file.url }}">Скачать файл</a>
+</p>
+{% endblock %}
